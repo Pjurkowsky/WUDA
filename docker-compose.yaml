@@ -7,3 +7,22 @@ services:
       POSTGRES_DB: games
     ports:
       - 5432:5432
+  backend:
+    build:
+      context: ./back-end/
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./back-end/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+  frontend:
+    build:
+      context: ./front-end/
+    env_file:
+      - ./front-end/.env
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+
