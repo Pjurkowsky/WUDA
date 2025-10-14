@@ -18,12 +18,12 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-          python -m pip install -r back-end/requirements_lint.txt
+          python -m pip install -r backend/requirements_lint.txt
 
       - name: Run linter
         run: |
           source venv/bin/activate
-          python -m black --check front-end/
+          python -m black --check back-end/
   lint-frontend:
     runs-on: ubuntu-latest
     steps:
@@ -53,7 +53,7 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v4
 
-        - name: Hello world
+        - name: Build container
           run: echo "Halo, jest tam kto?"
   build-frontend:
       runs-on: ubuntu-latest
