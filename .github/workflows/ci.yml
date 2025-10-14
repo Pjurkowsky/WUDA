@@ -75,8 +75,8 @@ jobs:
             file: ./front-end/Dockerfile
             push: true
             tags: |
-              ghcr.io/pjurkowsky/wuda:latest
-              ghcr.io/pjurkowsky/wuda:${{ github.sha }}
+              ghcr.io/pjurkowsky/wuda-frontend:latest
+              ghcr.io/pjurkowsky/wuda-frontend:${{ github.sha }}
 
 
   build-backend:
@@ -103,6 +103,6 @@ jobs:
             file: ./back-end/Dockerfile
             push: true
             tags: |
-              ghcr.io/pjurkowsky/wuda:latest
-              ghcr.io/pjurkowsky/wuda:${{ github.sha }}
+              ghcr.io/pjurkowsky/wuda-backend:latest
+              ghcr.io/pjurkowsky/wuda-backend:${{ github.sha }}
 
