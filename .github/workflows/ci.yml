@@ -22,7 +22,9 @@ jobs:
 
 
       - name: Run linter
-        run: python -m black --check front-end/
+        run: |
+          source venv/bin/activate
+          python -m black --check front-end/
   build:
     runs-on: ubuntu-latest
     steps:
