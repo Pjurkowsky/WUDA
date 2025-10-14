@@ -1,9 +1,30 @@
-name: CI
+name: Lint
 
 on: [push]
 
 jobs:
-  lint:
+  lint-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install -r back-end/requirements_lint.txt
+
+      - name: Run linter
+        run: |
+          source venv/bin/activate
+          python -m black --check front-end/
+  lint-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -25,12 +46,3 @@ jobs:
         run: |
           source venv/bin/activate
           python -m black --check front-end/
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Hello world
-        run: echo "Halo, jest tam kto?"
-
