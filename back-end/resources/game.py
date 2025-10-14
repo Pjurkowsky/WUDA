@@ -7,7 +7,6 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from logger import LOGGER
 
 
-
 class GameList(Resource):
     def get(self, game_id=None):
         session = SessionLocal()
@@ -17,13 +16,10 @@ class GameList(Resource):
             return_object = games_schema.dump(games)
         else:
             LOGGER.info("Id provided, retrieving single game")
-            game = session.query(models.Game).filter(
-                models.Game.id == game_id
-            ).first()
+            game = session.query(models.Game).filter(models.Game.id == game_id).first()
             return_object = game_schema.dump(game)
         session.close()
         return return_object, 200
-
 
     @jwt_required()
     def post(self):

@@ -7,6 +7,7 @@ from flask_jwt_extended import create_access_token
 from datetime import timedelta
 from logger import LOGGER
 
+
 class RegisterUser(Resource):
     def get(self):
         data = request.get_json()
@@ -18,13 +19,15 @@ class RegisterUser(Resource):
             return {"message": "Wrong request"}, 400
         LOGGER.info("fetching username")
         session = SessionLocal()
-        user = session.query(models.User).filter(
-            models.User.username == data['username']
-        ).first()
+        user = (
+            session.query(models.User)
+            .filter(models.User.username == data["username"])
+            .first()
+        )
         session.close()
         LOGGER.info("returning username")
         if user:
-            return { "username": user.username}, 200
+            return {"username": user.username}, 200
         return {"message": "User not found"}, 404
 
     def post(self):
@@ -39,9 +42,11 @@ class RegisterUser(Resource):
         new_user = models.User(**data)
         LOGGER.info("Checking if username exist")
         session = SessionLocal()
-        user = session.query(models.User).filter(
-            models.User.username == data['username']
-        ).first()
+        user = (
+            session.query(models.User)
+            .filter(models.User.username == data["username"])
+            .first()
+        )
         if user:
             return {"message": "User already exist"}, 409
         LOGGER.info("Registering new user username")
@@ -50,6 +55,7 @@ class RegisterUser(Resource):
         session.refresh(new_user)
         session.close()
         return {"message": "Created new user"}, 201
+
 
 class LoginUser(Resource):
     def post(self):
@@ -62,12 +68,14 @@ class LoginUser(Resource):
             return {"message": "Wrong request"}, 400
         LOGGER.info("Validating input")
         session = SessionLocal()
-        user = session.query(models.User).filter(
-            models.User.username == data['username']
-        ).first()
+        user = (
+            session.query(models.User)
+            .filter(models.User.username == data["username"])
+            .first()
+        )
 
         if user:
-            if user.password == data['password']:
+            if user.password == data["password"]:
                 jwt_token = create_access_token(
                     identity=str(user.id),
                     expires_delta=timedelta(hours=1),

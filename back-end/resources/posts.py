@@ -13,9 +13,7 @@ class PostDetails(Resource):
     def get(self, post_id: int):
         session = SessionLocal()
         LOGGER.info("Retrieving post")
-        post = session.query(models.Post).filter(
-            models.Post.id == post_id
-        ).first()
+        post = session.query(models.Post).filter(models.Post.id == post_id).first()
         return_dump = details_schema.dump(post)
         session.close()
         if post:
@@ -23,13 +21,19 @@ class PostDetails(Resource):
         else:
             return {"message": "Not found"}, 400
 
+
 class PostList(Resource):
     def get(self):
         session = SessionLocal()
-        posts = session.query(models.Post).options(
+        posts = (
+            session.query(models.Post)
+            .options(
                 joinedload(models.Post.author),
-    joinedload(models.Post.game),
-    joinedload(models.Post.comments).joinedload(models.Comment.author)).all()
+                joinedload(models.Post.game),
+                joinedload(models.Post.comments).joinedload(models.Comment.author),
+            )
+            .all()
+        )
         session.close()
         return post_list_schema.dump(posts), 200
 
@@ -50,7 +54,7 @@ class PostList(Resource):
             body=data["body"],
             author_id=current_user,
             game_id=data.get("game_id"),
-            created_at=date.today()
+            created_at=date.today(),
         )
         session.add(new_post)
         session.commit()
@@ -59,6 +63,7 @@ class PostList(Resource):
         session.close()
 
         return return_data, 201
+
 
 class PostComments(Resource):
     @jwt_required()
@@ -82,7 +87,7 @@ class PostComments(Resource):
             content=data["content"],
             post_id=post_id,
             user_id=current_user,
-            created_at=date.today()
+            created_at=date.today(),
         )
         session.add(new_comment)
         session.commit()
