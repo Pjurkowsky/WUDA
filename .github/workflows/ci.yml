@@ -18,7 +18,7 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-          python -m pip install -r backend/requirements_lint.txt
+          python -m pip install -r back-end/requirements_lint.txt
 
       - name: Run linter
         run: |
@@ -52,6 +52,16 @@ jobs:
       steps:
         - name: Checkout code
           uses: actions/checkout@v4
+
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v3
+
+        - name: Build Docker image
+          uses: docker/build-push-action@v5
+          with:
+            context: ./back-end
+            file: ./Dockerfile
+            push: false
 
         - name: Build container
           run: echo "Halo, jest tam kto?"
