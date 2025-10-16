@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, select, text
 from sqlalchemy.orm import sessionmaker, scoped_session
 from settings import DATABASE_URL
 from models import Game
@@ -26,7 +26,7 @@ def init_db():
 def check_database():
     try:
         session = SessionLocal()
-        session.execute("SELECT 1")
+        session.execute(select(1))
         return True
     except Exception:
         return False

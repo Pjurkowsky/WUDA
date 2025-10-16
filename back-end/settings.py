@@ -11,5 +11,5 @@ DATABASE_HOST = environ.get("POSTGRES_HOST", "localhost")
 DATABASE_URL = f"postgresql+psycopg2://{DATABASE_USER}:{DATABASE_PWD}@{DATABASE_HOST}:{DATABASE_PORT}/{DB}"
 JWT_KEY = environ["JWT_KEY"]
 
-APP_PORT = environ["APP_PORT"]
+APP_PORT = int(environ["APP_PORT"])
 APP_HOST = environ.get("APP_HOST", "localhost")
