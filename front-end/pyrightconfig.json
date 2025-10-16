@@ -1,0 +1,4 @@
+{
+    "include": ["."],
+    "exclude": ["venv", "app.py"]
+}

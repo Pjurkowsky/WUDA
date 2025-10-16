@@ -82,7 +82,7 @@ def fetch_post(post_id: int):
 def add_post(post: NewPost) -> bool:
 
     if post.game_id == -1:
-        data = post.model_dump(exclude="game_id")
+        data = post.model_dump(exclude=set("game_id"))
     else:
         data = post.model_dump()
 
@@ -119,7 +119,7 @@ def login_user(user: Login) -> dict[str, str] | None:
 
 
 def register_user(user: RegisterUser) -> dict[str, str] | None:
-    payload = user.model_dump(exclude="repeat_pwd")
+    payload = user.model_dump(exclude=set("repeat_pwd"))
     response = requests.post(f"{BACKEND_URL}/auth/register", json=payload)
     if response.status_code == 201:
         return response.json()
