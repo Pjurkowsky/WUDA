@@ -53,7 +53,8 @@ jobs:
       - name: Run linter
         run: |
           source venv/bin/activate
-          pyright
+          cd back-end
+          python -m pyright .
 
   check-frontend-formatting:
     runs-on: ubuntu-latest
@@ -102,7 +103,8 @@ jobs:
       - name: Run linter
         run: |
           source venv/bin/activate
-          pyright
+          cd front-end
+          python -m pyright .
 
 
 
