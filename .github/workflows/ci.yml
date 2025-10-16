@@ -7,8 +7,32 @@ permissions:
   packages: write
 
 jobs:
+
+  check-backend-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install -r back-end/requirements_lint.txt
+
+      - name: Run formatter
+        run: |
+          source venv/bin/activate
+          python -m black --check back-end/
+
   lint-backend:
     runs-on: ubuntu-latest
+    needs: [check-backend-formatting]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -27,9 +51,34 @@ jobs:
       - name: Run linter
         run: |
           source venv/bin/activate
-          python -m black --check back-end/
+          pyright
+
+  check-frontend-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install -r front-end/requirements_lint.txt
+
+
+      - name: Run formatter
+        run: |
+          source venv/bin/activate
+          python -m black --check front-end/
+          
   lint-frontend:
     runs-on: ubuntu-latest
+    needs: [check-frontend-formatting]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -49,7 +98,9 @@ jobs:
       - name: Run linter
         run: |
           source venv/bin/activate
-          python -m black --check front-end/
+          pyright
+
+
 
   test-backend:
     runs-on: ubunut-letest
