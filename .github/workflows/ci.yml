@@ -157,9 +157,34 @@ jobs:
           python -m pytest -q
 
 
+  vuln-scan-dependencies:
+    runs-on: ubunut-letest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install pip-audit
+
+      - name: Run tests
+        run: |
+          source venv/bin/activate
+
+          pip-audit -r ./front-end/requirements.txt -r ./front-end/requirements_lint.txt -r ./front-end/requirements_test.txt
+          pip-audit -r ./back-end/requirements.txt -r ./back-end/requirements_lint.txt -r ./back-end/requirements_test.txt
+
+
   build-frontend:
       runs-on: ubuntu-latest
-      needs: [test-frontend, test-backend]
+      needs: [test-frontend, test-backend, vuln-scan-dependencies]
       steps:
         - name: Checkout code
           uses: actions/checkout@v4
@@ -187,7 +212,7 @@ jobs:
 
   build-backend:
       runs-on: ubuntu-latest
-      needs: [test-frontend, test-backend]
+      needs: [test-frontend, test-backend, vuln-scan-dependencies]
       steps:
         - name: Checkout code
           uses: actions/checkout@v4
