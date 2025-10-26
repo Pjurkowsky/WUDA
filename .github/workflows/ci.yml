@@ -109,7 +109,7 @@ jobs:
 
 
   test-backend:
-    runs-on: ubunut-letest
+    runs-on: ubunut-latest
     needs: [lint-frontend, lint-backend]
     steps:
       - name: Checkout code
@@ -133,7 +133,7 @@ jobs:
           python -m pytest -q
   
   test-frontend:
-    runs-on: ubunut-letest
+    runs-on: ubunut-latest
     needs: [lint-frontend, lint-backend]
     steps:
       - name: Checkout code
@@ -158,7 +158,7 @@ jobs:
 
 
   vuln-scan-dependencies:
-    runs-on: ubunut-letest
+    runs-on: ubunut-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
