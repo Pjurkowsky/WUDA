@@ -1,0 +1,28 @@
+
+frontend:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ghcr.io/pjurkowsky/wuda-frontend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+  SECRET_KEY: your_secret_key_here
+backend:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ghcr.io/pjurkowsky/wuda-backend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+database:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: postgres
+    tag: "latest"
+    pullPolict: IfNotPresent
