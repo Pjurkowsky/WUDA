@@ -11,6 +11,7 @@ frontend:
     port: 80
     targetPort: 80
   SECRET_KEY: your_secret_key_here
+
 backend:
   enabled: true
   replicaCount: 1
@@ -18,6 +19,16 @@ backend:
     repository: ghcr.io/pjurkowsky/wuda-backend
     pullPolicy: IfNotPresent
     tag: "latest"
+
+  POSTGRES_DB: games
+  POSTGRES_USER: board_games
+  POSTGRES_HOST: postgres
+  PORT: 5432
+  APP_PORT: 5000
+  APP_HOST: 0.0.0.0
+
+  POSTGRES_PASSWORD: alamakota
+  JWT_KEY: your_secret_jwt_key  
 
 database:
   enabled: true

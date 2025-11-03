@@ -1,0 +1,67 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "app.name" . }}-backend
+  labels:
+    app: {{ include "app.name" . }}
+    tier: backend
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "app.name" . }}
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: {{ include "app.name" . }}
+        tier: backend
+    spec:
+      containers:
+        - name: backend
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "app.name" . }}-backend
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "app.name" . }}-backend
+                  key: POSTGRES_USER
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "app.name" . }}-backend
+                  key: POSTGRES_HOST
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "app.name" . }}-backend
+                  key: PORT
+            - name: APP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "app.name" . }}-backend
+                  key: APP_PORT
+            - name: APP_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "app.name" . }}-backend
+                  key: APP_HOST
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.name" . }}-backend
+                  key: JWT_KEY
+            - name: POSTGRES_PASSWORD 
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.name" . }}-backend
+                  key: POSTGRES_PASSWORD

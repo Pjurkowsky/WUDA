@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "app.name" . }}-backend
+data:
+  POSTGRES_DB: {{ .Values.backend.POSTGRES_DB | quote }}
+  POSTGRES_USER:  {{ .Values.backend.POSTGRES_USER | quote }}
+  POSTGRES_HOST: {{.Values.backend.POSTGRES_HOST | quote }}
+  PORT: {{ .Values.backend.PORT | quote }}
+  APP_PORT: {{ .Values.backend.APP_PORT | quote }}
+  APP_HOST: {{ .Values.backend.APP_HOST | quote }}
+ 
+
