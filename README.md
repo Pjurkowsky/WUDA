@@ -87,10 +87,20 @@ services:
       - 5432:5432
 ```
 
-## For students.
-In `tasks` directory there are clear instructions for each task that you should do in order to pass the course.
-Recommended order:
-1. [CICD](./tasks/CICD.md)
-2. [Kubernetes](./tasks/kubernetes.md)
-3. [Monitoring](./tasks/monitoring.md)
+## Kubernetes
+Deploy helm chart:
+```bash
+cd charts
+helm install app .
+```
 
+Check if pods are working:
+```bash
+kubectl get pods
+```
+Output should be similiar to:
+```bash
+NAME                            READY   STATUS    RESTARTS   AGE
+app-backend-6f8d54dd7f-jmrkl    1/1     Running   0          20m
+app-frontend-8657bb558b-dfr4d   1/1     Running   0          20m
+```
