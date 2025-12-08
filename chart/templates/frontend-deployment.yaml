@@ -23,10 +23,12 @@ spec:
           image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
           imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
           ports:
-            - containerPort: 80
+            - containerPort: 8000
           env:
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ include "app.name" . }}-frontend
                   key: SECRET_KEY
+            - name: BACKEND_HOSTNAME
+              value: {{ include "app.name" . }}-backend

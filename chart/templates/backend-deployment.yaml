@@ -23,7 +23,7 @@ spec:
           image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
           imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
           ports:
-            - containerPort: 80
+            - containerPort: 5000
           env:
             - name: POSTGRES_DB
               valueFrom:

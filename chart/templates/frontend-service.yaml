@@ -1,0 +1,24 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "app.name" . }}-frontend
+  labels:
+    app: {{ include "app.name" . }}
+    tier: frontend
+  {{- with .Values.frontend.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.frontend.service.type }}
+  selector:
+    app: {{ include "app.name" . }}
+    tier: frontend
+  ports:
+    - name: http
+      port: {{ .Values.frontend.service.port }}
+      targetPort: {{ .Values.frontend.service.targetPort }}
+      {{- if and (eq .Values.frontend.service.type "NodePort") .Values.frontend.service.nodePort }}
+      nodePort: {{ .Values.frontend.service.nodePort }}
+      {{- end }}

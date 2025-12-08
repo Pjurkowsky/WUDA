@@ -1,0 +1,18 @@
+{{- if .Values.database.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "app.name" . }}-database
+  labels:
+    app: {{ include "app.name" . }}
+    tier: database
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ include "app.name" . }}
+    tier: database
+  ports:
+    - name: postgres
+      port: {{ .Values.database.service.port }}
+      targetPort: 5432
+{{- end }}

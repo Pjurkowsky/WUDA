@@ -1,0 +1,51 @@
+{{- if .Values.database.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "app.name" . }}-database
+  labels:
+    app: {{ include "app.name" . }}
+    tier: database
+spec:
+  replicas: {{ .Values.database.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "app.name" . }}
+      tier: database
+  template:
+    metadata:
+      labels:
+        app: {{ include "app.name" . }}
+        tier: database
+    spec:
+      containers:
+        - name: database
+          image: "{{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}"
+          imagePullPolicy: {{ .Values.database.image.pullPolicy }}
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "app.name" . }}-backend
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "app.name" . }}-backend
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD 
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "app.name" . }}-backend
+                  key: POSTGRES_PASSWORD
+
+      #     volumeMounts:
+      #       - name: db-data
+      #         mountPath: /var/lib/postgresql/data
+      # volumes:
+      #   - name: db-data
+      #     persistentVolumeClaim:
+      #       claimName: {{ include "app.name" . }}-db-data
+{{- end }}
